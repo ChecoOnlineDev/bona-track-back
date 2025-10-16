@@ -1,5 +1,4 @@
 import {
-    IsEnum,
     IsInt,
     IsNotEmpty,
     IsOptional,
@@ -12,7 +11,7 @@ export class CreateRequestDto {
     @IsNotEmpty()
     tableId: number;
 
-    @IsEnum(RequestType)
+    @IsString() // Cambiado de IsEnum a IsString
     @IsNotEmpty()
     type: RequestType;
 

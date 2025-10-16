@@ -4,7 +4,7 @@ import { PrismaModule } from './prisma/prisma.module';
 import { TablesModule } from './tables/tables.module';
 import { WaitersModule } from './waiters/waiters.module';
 import { RequestsModule } from './requests/requests.module';
-import { EventsGateway } from './events/events.gateway';
+import { EventsModule } from './events/events.module';
 
 @Module({
     imports: [
@@ -15,8 +15,9 @@ import { EventsGateway } from './events/events.gateway';
         TablesModule,
         WaitersModule,
         RequestsModule,
+        EventsModule, // Importamos el nuevo módulo de eventos
     ],
     controllers: [],
-    providers: [EventsGateway],
+    providers: [], // Ya no necesita proveer EventsGateway directamente
 })
 export class AppModule {}

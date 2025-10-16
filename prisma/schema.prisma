@@ -1,3 +1,6 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
 generator client {
   provider = "prisma-client-js"
 }
@@ -24,6 +27,13 @@ enum RequestStatus {
   COMPLETADO
 }
 
+// Nuevo: Añadimos prioridad para destacar peticiones urgentes
+enum Priority {
+  BAJA
+  MEDIA
+  ALTA
+}
+
 model Table {
   id   Int    @id @default(autoincrement())
   name String @unique
@@ -48,6 +58,8 @@ model Request {
   type        RequestType
   notes       String?
   status      RequestStatus @default(PENDIENTE)
+  // Nuevo: Campo para prioridad
+  priority    Priority      @default(BAJA)
   createdAt   DateTime      @default(now())
   acceptedAt  DateTime?
   completedAt DateTime?
@@ -56,5 +68,20 @@ model Request {
   table  Table   @relation(fields: [tableId], references: [id])
   waiter Waiter? @relation(fields: [waiterId], references: [id])
 
+  // Nuevo: Relación con el historial de logs
+  logs RequestLog[]
+
   @@map("requests")
+}
+
+// Nuevo: Modelo para registrar cada cambio de estado de una petición
+model RequestLog {
+  id        Int           @id @default(autoincrement())
+  requestId Int
+  status    RequestStatus
+  changedAt DateTime      @default(now())
+
+  request Request @relation(fields: [requestId], references: [id])
+
+  @@map("request_logs")
 }
